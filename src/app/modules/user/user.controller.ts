@@ -17,11 +17,18 @@ const createUser = async (req: Request, res: Response) => {
   }
 }
 
-const getUser = (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: 'Users fetched successfully!',
-  })
+const getUser = async (req: Request, res: Response) => {
+  try {
+    const result = await userServices.getUsersFromDB()
+
+    res.status(200).json({
+      success: true,
+      message: 'Users fetched successfully!',
+      data: result,
+    })
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export const userController = {
