@@ -35,9 +35,17 @@ const updateUserData = async (userId: string, updatedData: Partial<User>) => {
   return result
 }
 
+const deleteUserFromDB = async (userId: string) => {
+    const result = await UserModel.deleteOne({ userId: userId });
+
+    return result;
+};
+
+
 export const userServices = {
   saveUserIntoDB,
   getUsersFromDB,
   getUserByUserId,
   updateUserData,
+  deleteUserFromDB
 }
