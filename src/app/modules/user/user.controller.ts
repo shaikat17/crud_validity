@@ -77,11 +77,60 @@ const deleteAnUser = async (req: Request, res: Response) => {
   }
 }
 
+const addOrder = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const order = req.body
+
+  try {
+    const result = await userServices.addOrderToUser(userId, order)
+    res.status(200).json({
+      success: true,
+      message: "Order created successfully!",
+      data: result,
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getOrders = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+
+  try {
+    const result = await userServices.getAllOrdersOfAUser(userId)
+    res.status(200).json({
+      success: true,
+      message: "Order fetched successfully!",
+      data: result,
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getOrdersPrice = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+
+  try {
+    const result = await userServices.calculateTotalPriceForUser(userId)
+    res.status(200).json({
+      success: true,
+      message: "Total price calculated successfully!",
+      data: result,
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 export const userController = {
   createUser,
   getUser,
   getAnUser,
   updateUser,
-  deleteAnUser
+  deleteAnUser,
+  addOrder,
+  getOrders,
+  getOrdersPrice
 }

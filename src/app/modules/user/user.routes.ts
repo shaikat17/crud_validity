@@ -13,4 +13,10 @@ router.put('/users/:userId', userController.updateUser)
 
 router.delete('/users/:userId', userController.deleteAnUser)
 
+router.post('/users/:userId/orders', userController.addOrder)
+
+router.get('/users/:userId/orders', userController.getOrders)
+
+router.get('/users/:userId/orders/total-price', userController.getOrdersPrice)
+
 export const userRoutes = router
