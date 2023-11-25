@@ -31,7 +31,41 @@ const getUser = async (req: Request, res: Response) => {
   }
 }
 
+const getAnUser = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+
+  try {
+    const result = await userServices.getUserByUserId(userId)
+    res.status(200).json({
+      success: true,
+      message: 'User fetched successfully!',
+      data: result,
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const updateUser = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const userData = req.body
+  console.log('User ID: ', userId, 'User Data: ', userData)
+
+  try {
+    const result = await userServices.updateUserData(userId, userData)
+    res.status(200).json({
+      success: true,
+      message: 'User fetched successfully!',
+      data: result,
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const userController = {
   createUser,
   getUser,
+  getAnUser,
+  updateUser,
 }

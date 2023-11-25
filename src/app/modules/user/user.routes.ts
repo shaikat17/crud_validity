@@ -7,4 +7,8 @@ router.post('/users', userController.createUser)
 
 router.get('/users', userController.getUser)
 
+router.get('/users/:userId', userController.getAnUser)
+
+router.put('/users/:userId', userController.updateUser)
+
 export const userRoutes = router
