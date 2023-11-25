@@ -4,22 +4,18 @@ import { UserModel } from './user.model'
 const saveUserIntoDB = async (userData: User) => {
   const result = await UserModel.create(userData)
 
-  return result
+  const retrievedUser = await UserModel.findById(result._id).select('-password -orders');
+  return retrievedUser;
 }
 
 const getUsersFromDB = async () => {
-    const result = await UserModel.find().select('-password').lean();
+  const result = await UserModel.find().select('username fullName age email address');
 
-    const filteredResult = result.map(user => {
-        return user.orders && user.orders.length === 0
-        ? { ...user, orders: undefined }
-        : user;
-    });
-  
-    return filteredResult;
-}
+  return result;
+};
+
 
 export const userServices = {
   saveUserIntoDB,
-  getUsersFromDB
+  getUsersFromDB,
 }
