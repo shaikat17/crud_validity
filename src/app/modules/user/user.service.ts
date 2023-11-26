@@ -32,7 +32,11 @@ const updateUserData = async (userId: string, updatedData: Partial<User>) => {
     { $set: updatedData },
   )
 
-  return result
+  const user = await UserModel.findOne({userId}).select(
+    '-password -orders',
+  )
+
+  return user
 }
 
 const deleteUserFromDB = async (userId: string) => {
@@ -50,11 +54,7 @@ const addOrderToUser = async (userId: string, order: ProductDetails) => {
 const getAllOrdersOfAUser = async (userId: string) => {
     const user = await UserModel.findOne({ userId: userId }).select('orders');
 
-    if (user) {
-      return user.orders || [];
-    } else {
-      return [];
-    }
+    return user;
 };
 
 // Function to calculate total price from orders

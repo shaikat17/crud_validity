@@ -36,11 +36,21 @@ const getAnUser = async (req: Request, res: Response) => {
 
   try {
     const result = await userServices.getUserByUserId(userId)
-    res.status(200).json({
-      success: true,
-      message: 'User fetched successfully!',
-      data: result,
-    })
+    if(result){
+      return res.status(200).json({
+        success: true,
+        message: 'User fetched successfully!',
+        data: result,})
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
   } catch (error) {
     console.log(error)
   }
@@ -52,11 +62,24 @@ const updateUser = async (req: Request, res: Response) => {
 
   try {
     const result = await userServices.updateUserData(userId, userData)
-    res.status(200).json({
-      success: true,
-      message: "User updated successfully!",
-      data: result,
-    })
+    console.log("🚀 ~ file: user.controller.ts:65 ~ updateUser ~ result:", result)
+    if(result) {
+      return res.status(200).json({
+        success: true,
+        message: "User updated successfully!",
+        data: result,
+      })
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+    
   } catch (error) {
     console.log(error)
   }
@@ -67,11 +90,21 @@ const deleteAnUser = async (req: Request, res: Response) => {
 
   try {
     const result = await userServices.deleteUserFromDB(userId)
-    res.status(200).json({
+    if(result.deletedCount){
+    return res.status(200).json({
       success: true,
       message: "User deleted successfully!",
-      data: result,
-    })
+      data: null,
+    })} else {
+return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+      }
   } catch (error) {
     console.log(error)
   }
@@ -83,11 +116,21 @@ const addOrder = async (req: Request, res: Response) => {
 
   try {
     const result = await userServices.addOrderToUser(userId, order)
-    res.status(200).json({
+    if(result.modifiedCount){
+    return res.status(200).json({
       success: true,
       message: "Order created successfully!",
       data: result,
-    })
+    })} else {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
   } catch (error) {
     console.log(error)
   }
@@ -98,11 +141,21 @@ const getOrders = async (req: Request, res: Response) => {
 
   try {
     const result = await userServices.getAllOrdersOfAUser(userId)
-    res.status(200).json({
+    if(result){
+    return res.status(200).json({
       success: true,
       message: "Order fetched successfully!",
       data: result,
-    })
+    })} else {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
   } catch (error) {
     console.log(error)
   }
