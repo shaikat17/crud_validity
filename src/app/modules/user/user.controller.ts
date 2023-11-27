@@ -1,15 +1,27 @@
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import { userServices } from './user.service'
+import { ProductDetailsJoiSchema, UserJoiSchema } from './user.validation'
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body
+
+    const {error} = UserJoiSchema.validate(user)
+
+    if(error){
+      return res.status(200).json({
+        success: false,
+        message: 'Opps! Something went wrong.',
+        data: error.details[0].message,
+      })
+    }
+    
     bcrypt.hash(user.password, 10, async function(err, hash) {
       user.password = hash
       const result = await userServices.saveUserIntoDB(user)
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'User created successfully!',
       data: result,
@@ -119,6 +131,16 @@ const addOrder = async (req: Request, res: Response) => {
   const order = req.body
 
   try {
+    const {error} = ProductDetailsJoiSchema.validate(order)
+
+    if(error){
+      return res.status(200).json({
+        success: false,
+        message: 'Opps! Something went wrong.',
+        data: error.details[0].message,
+      })
+    }
+    
     const result = await userServices.addOrderToUser(userId, order)
     if(result.modifiedCount){
     return res.status(200).json({
