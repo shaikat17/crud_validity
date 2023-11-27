@@ -1,17 +1,21 @@
 import { Request, Response } from 'express'
+import bcrypt from 'bcrypt'
 import { userServices } from './user.service'
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body
-
-    const result = await userServices.saveUserIntoDB(user)
+    bcrypt.hash(user.password, 10, async function(err, hash) {
+      user.password = hash
+      const result = await userServices.saveUserIntoDB(user)
 
     res.status(200).json({
       success: true,
       message: 'User created successfully!',
       data: result,
     })
+  });
+
   } catch (error) {
     console.log(error)
   }
@@ -62,7 +66,7 @@ const updateUser = async (req: Request, res: Response) => {
 
   try {
     const result = await userServices.updateUserData(userId, userData)
-    console.log("🚀 ~ file: user.controller.ts:65 ~ updateUser ~ result:", result)
+    
     if(result) {
       return res.status(200).json({
         success: true,
