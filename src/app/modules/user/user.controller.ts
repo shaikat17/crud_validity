@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import { userServices } from './user.service'
 import { ProductDetailsJoiSchema, UserJoiSchema } from './user.validation'
 
+// Controler for creating an user
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body
@@ -17,6 +18,7 @@ const createUser = async (req: Request, res: Response) => {
       })
     }
     
+    // to hash the user password
     bcrypt.hash(user.password, 10, async function(err, hash) {
       user.password = hash
       const result = await userServices.saveUserIntoDB(user)
@@ -33,6 +35,7 @@ const createUser = async (req: Request, res: Response) => {
   }
 }
 
+// Controller for getting all user from DB
 const getUser = async (req: Request, res: Response) => {
   try {
     const result = await userServices.getUsersFromDB()
@@ -47,6 +50,7 @@ const getUser = async (req: Request, res: Response) => {
   }
 }
 
+// Controller to get a specific user
 const getAnUser = async (req: Request, res: Response) => {
   const userId = req.params.userId
 
@@ -72,6 +76,7 @@ const getAnUser = async (req: Request, res: Response) => {
   }
 }
 
+// Controller to update a user
 const updateUser = async (req: Request, res: Response) => {
   const userId = req.params.userId
   const userData = req.body
@@ -101,6 +106,7 @@ const updateUser = async (req: Request, res: Response) => {
   }
 }
 
+// Controller to delete an user by using userId
 const deleteAnUser = async (req: Request, res: Response) => {
   const userId = req.params.userId
 
@@ -126,6 +132,7 @@ return res.status(404).json({
   }
 }
 
+// Controller to add order details for an user
 const addOrder = async (req: Request, res: Response) => {
   const userId = req.params.userId
   const order = req.body
@@ -140,7 +147,7 @@ const addOrder = async (req: Request, res: Response) => {
         data: error.details[0].message,
       })
     }
-    
+
     const result = await userServices.addOrderToUser(userId, order)
     if(result.modifiedCount){
     return res.status(200).json({
@@ -162,6 +169,7 @@ const addOrder = async (req: Request, res: Response) => {
   }
 }
 
+// Controller to retrieve all orders of an user
 const getOrders = async (req: Request, res: Response) => {
   const userId = req.params.userId
 
@@ -187,6 +195,7 @@ const getOrders = async (req: Request, res: Response) => {
   }
 }
 
+// Controller to get total price of all orders of an user
 const getOrdersPrice = async (req: Request, res: Response) => {
   const userId = req.params.userId
 

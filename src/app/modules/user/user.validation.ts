@@ -1,26 +1,26 @@
 import Joi from 'joi';
 
-// Define Joi schema for FullName
+// Joi schema for FullName
 const FullNameJoiSchema = Joi.object({
   firstName: Joi.string().required().max(20),
   lastName: Joi.string().required(),
 });
 
-// Define Joi schema for Address
+// Joi schema for Address
 const AddressJoiSchema = Joi.object({
   street: Joi.string().required(),
   city: Joi.string().required(),
   country: Joi.string().required(),
 });
 
-// Define Joi schema for ProductDetails
+// Joi schema for ProductDetails
 const ProductDetailsJoiSchema = Joi.object({
   productName: Joi.string().required(),
   price: Joi.number().required(),
   quantity: Joi.number().required(),
 });
 
-// Define Joi schema for User
+// Joi schema for User
 const UserJoiSchema = Joi.object({
   userId: Joi.number().required(),
   username: Joi.string().required(),
