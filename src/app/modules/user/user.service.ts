@@ -70,7 +70,7 @@ const calculateTotalPriceForUser = async (userId: string) => {
 
     if (!user) {
       console.log('User not found');
-      return 0; // or throw an error, depending on your requirements
+      return 0; 
     }
 
     const orders = user.orders || [];
